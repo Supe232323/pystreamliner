@@ -48,12 +48,12 @@ class ImportFinding:
     lineno: int
     end_lineno: int
     original_text: str
-    bound_names: List[str]
-    unused_names: List[str]
-    used_names: List[str]
+    bound_names: list[str]
+    unused_names: list[str]
+    used_names: list[str]
     is_from_import: bool
     indent: str
-    module: Optional[str] = None
+   module: str | None = None
 
 
 @dataclasses.dataclass
