@@ -1,16 +1,104 @@
 # PyStreamliner
 
-Simple tool made by opus 4.6-thinking that cleans up messy Python code
+**Automatically clean up messy Python files — without breaking anything.**
 
-It looks for repeated lines, unused imports, and weird if-else stuff, then fixes them automatically and gives you a cleaner version of your code.
+PyStreamliner uses Python's AST (abstract syntax tree) to safely detect and fix common code issues. It operates on two tiers: things it can fix automatically with zero risk, and things it flags for you to review manually.
 
-I made this because I hate spending forever cleaning up code, so now it just does it for you.
+---
 
-## How to use it
+## What it does
 
-1. Clone the repo or download the files  
-2. Put your messy Python file in the same folder  
-3. Run this command:
+**Auto-fixes (Tier 1 — applied immediately):**
+- Removes unused imports, or trims partially unused `from x import y` statements
+- Removes consecutive duplicate lines
+- Caps excessive blank lines
+
+**Warnings (Tier 2 — reported, never auto-changed):**
+- Unused variables
+- Unused top-level functions
+- Vague variable names (`x`, `tmp`, `foo`, `bar`, etc.)
+
+PyStreamliner never touches code it isn't certain about. If there's any doubt, it warns you instead.
+
+---
+
+## Install
 
 ```bash
-python streamliner.py your_messy_file.py
+git clone https://github.com/Supe232323/PyStreamliner.git
+cd PyStreamliner
+```
+
+No dependencies. Runs on Python 3.10+.
+
+---
+
+## Usage
+
+```bash
+python streamliner.py your_file.py
+```
+
+This will:
+1. Analyze `your_file.py`
+2. Write the cleaned version in-place
+3. Print a full report of what was changed and what needs manual review
+4. Show a diff of every modification
+
+**Preview changes without modifying anything:**
+
+```bash
+python streamliner.py --dry-run your_file.py
+```
+
+---
+
+## Example output
+
+```
+══════════════════════════════════════════
+  PyStreamliner Report
+══════════════════════════════════════════
+  File:                        main.py
+  Lines analyzed:                   312
+
+  Auto-fixes applied:
+    Unused imports removed:           3
+    Duplicate lines removed:          1
+    Blank lines reduced:              2
+
+  Warnings (manual review needed):
+    Unused variables detected:        2
+    Unused functions detected:        1
+    Vague variable names:             1
+──────────────────────────────────────────
+
+  Unused imports removed:
+    • line 4:  import os
+    • line 5:  import sys
+    • line 7:  from pathlib import Path, PurePath  (partially cleaned: kept 'Path')
+
+  Unused variables:
+    ⚠ line 42:  result
+    ⚠ line 87:  temp_val
+
+  Vague variable names:
+    ⚠ line 23:  tmp
+══════════════════════════════════════════
+```
+
+---
+
+## Why not just use Black / isort / autoflake?
+
+Those are great tools and PyStreamliner doesn't replace them. The difference:
+
+- **Black** formats style. PyStreamliner removes dead code.
+- **autoflake** removes unused imports but doesn't warn about unused variables, vague names, or dead functions.
+- **PyStreamliner** combines lightweight static analysis with conservative auto-fixing and a human-readable report — in a single file with zero dependencies.
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
