@@ -17,10 +17,13 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/Supe232323/pystreamliner"  # ← update with real repo
+"Homepage" = "https://github.com/Supe232323/pystreamliner"  # Update with your real repo
 
 [project.scripts]
 pystreamliner = "streamliner:main"
 
 [tool.setuptools]
 py-modules = ["streamliner"]
+
+[tool.setuptools.package-find]
+exclude = ["test*", "tests*", "test_messy*"]
