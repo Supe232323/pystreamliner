@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pystreamliner"
+version = "1.10.0"
+description = "A script to analyze and clean Python files"
+requires-python = ">=3.10"
+
+[project.scripts]
+streamliner = "streamliner:main"
