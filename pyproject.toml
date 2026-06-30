@@ -12,18 +12,23 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/Supe232323/pystreamliner"  # Update with your real repo
+"Homepage" = "https://github.com/Supe232323/pystreamliner"
 
 [project.scripts]
 pystreamliner = "streamliner:main"
 
 [tool.setuptools]
+# Force only this module, disable everything else
 py-modules = ["streamliner"]
+packages = []
+zip-safe = false
 
 [tool.setuptools.package-find]
-exclude = ["test*", "tests*", "test_messy*"]
+where = ["."]
+namespaces = false
+include = ["streamliner*"]
+exclude = ["test*", "tests*", "test_messy*", "*test*", "build*", "dist*", "__pycache__*"]
