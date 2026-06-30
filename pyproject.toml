@@ -5,12 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pystreamliner"
 version = "1.11"
-authors = [
-  { name = "Supe232323" }
-]
+authors = [{ name = "Supe232323" }]
 description = "Automatically clean up messy Python files without breaking anything using AST analysis."
 readme = "README.md"
 requires-python = ">=3.10"
+license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -18,7 +17,7 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com"
+"Homepage" = "https://github.com/Supe232323/pystreamliner"  # ← update with real repo
 
 [project.scripts]
 pystreamliner = "streamliner:main"
