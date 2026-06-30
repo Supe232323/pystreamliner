@@ -853,10 +853,10 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pystreamliner",
         description=(
-            "PyStreamliner — A conservative, zero-dependency Python source"
-            " cleaner.\n\n"
-            "Tier 1 auto-fixes are applied in-place (unless --dry-run is"
-            " given).\n"
+            "PyStreamliner - A conservative, zero-dependency Python source "
+            "cleaner.\n\n"
+            "Tier 1 auto-fixes are applied in-place (unless --dry-run is "
+            "given).\n"
             "Tier 2 issues are reported as warnings for manual review."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -867,36 +867,31 @@ def _build_argument_parser() -> argparse.ArgumentParser:
         help="Path to the Python source file to analyze / clean.",
     )
     parser.add_argument(
-        "--dry-run",
+        "-d", "--dry-run",
         action="store_true",
         default=False,
         help="Preview changes without modifying the file.",
     )
     parser.add_argument(
-        "--backup",
+        "-b", "--backup",
         action="store_true",
         default=False,
         help="Create a .bak copy of the original file before modifying it.",
     )
     parser.add_argument(
-        "--diff",
+        "-v", "--diff",
         action="store_true",
         default=False,
         help="Show a unified diff of the changes (implied by --dry-run).",
     )
     parser.add_argument(
-        "--no-color",
+        "-n", "--no-color",
         action="store_true",
         default=False,
-        help="Disable ANSI color output.",
-    )
-    parser.add_argument(
-        "--warn-only",
-        action="store_true",
-        default=False,
-        help="Only report warnings (Tier 2); do not apply any auto-fixes.",
+        help="Strip ANSI character codes for clean log piping.",
     )
     return parser
+
 
 
 # ─── Main Entry Point ─────────────────────────────────────────────────────────
