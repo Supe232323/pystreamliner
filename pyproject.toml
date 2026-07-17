@@ -6,12 +6,14 @@ build-backend = "setuptools.build_meta"
 name = "pystreamliner"
 version = "1.12.0"
 description = "A script to analyze and clean Python files"
+readme = "README.md"
 requires-python = ">=3.10"
 
 [project.scripts]
-streamliner = "streamliner:main"
+pystreamliner = "streamliner:main"
 
 [tool.setuptools.packages.find]
 include = ["streamliner*"]
 exclude = ["test_messy*", "tests*"]
+
 
