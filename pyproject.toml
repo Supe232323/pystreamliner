@@ -10,3 +10,8 @@ requires-python = ">=3.10"
 
 [project.scripts]
 streamliner = "streamliner:main"
+
+[tool.setuptools.packages.find]
+include = ["streamliner*"]
+exclude = ["test_messy*", "tests*"]
+
