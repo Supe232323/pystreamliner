@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pystreamliner"
-version = "1.12.0"
+version = "1.12.1"
 description = "A script to analyze and clean Python files"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -16,4 +16,8 @@ pystreamliner = "streamliner:main"
 include = ["streamliner*"]
 exclude = ["test_messy*", "tests*"]
 
+[project.urls]
+Homepage = "https://github.com"
+Repository = "https://github.com"
+Documentation = "https://github.com/wiki"
 
