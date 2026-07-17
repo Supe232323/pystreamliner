@@ -2,7 +2,7 @@
 
 **Automatically clean up messy Python files — without breaking anything.**
 
-PyStreamliner uses Python's AST (abstract syntax tree) to safely detect and fix common code issues. It operates on two tiers: things it can fix automatically with zero risk, and things it flags for you to review manually.
+pystreamliner uses Python's AST (abstract syntax tree) to safely detect and fix common code issues. It operates on two tiers: things it can fix automatically with zero risk, and things it flags for you to review manually.
 
 ---
 
@@ -18,7 +18,7 @@ PyStreamliner uses Python's AST (abstract syntax tree) to safely detect and fix 
 - Unused top-level functions
 - Vague variable names (`x`, `tmp`, `foo`, `bar`, etc.)
 
-PyStreamliner never touches code it isn't certain about. If there's any doubt, it warns you instead.
+pystreamliner never touches code it isn't certain about. If there's any doubt, it warns you instead.
 
 ---
 
