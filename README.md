@@ -1,4 +1,4 @@
-# PyStreamliner
+# pystreamliner
 
 **Automatically clean up messy Python files — without breaking anything.**
 
