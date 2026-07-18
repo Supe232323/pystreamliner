@@ -25,8 +25,7 @@ pystreamliner never touches code it isn't certain about. If there's any doubt, i
 ## Install
 
 ```bash
-git clone https://github.com/Supe232323/PyStreamliner.git
-cd PyStreamliner
+pip install pystreamliner
 ```
 
 No dependencies. Runs on Python 3.10+.
