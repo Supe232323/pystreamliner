@@ -1,5 +1,6 @@
 # pystreamliner
-
+[![PyPI version](https://img.shields.io/pypi/v/pystreamliner.svg)](https://pypi.org/project/pystreamliner/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/pystreamliner)](https://pypi.org/project/pystreamliner/)
 **Automatically clean up messy Python files — without breaking anything.**
 
 pystreamliner uses Python's AST (abstract syntax tree) to safely detect and fix common code issues. It operates on two tiers: things it can fix automatically with zero risk, and things it flags for you to review manually.
