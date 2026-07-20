@@ -2,7 +2,7 @@
 
 [![PyPI version](https://shields.io)](https://pypi.org)
 [![Downloads](https://shields.io)](https://pypistats.org)
-[![License](https://shields.io)](https://opensource.org)
+[![License](https://shields.io)](https://github.com)
 
 **Automatically clean up messy Python files — without breaking anything.**
 
