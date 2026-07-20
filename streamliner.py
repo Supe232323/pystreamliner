@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Supe232323
 #!/usr/bin/env python3
 """PyStreamliner — A conservative, single-file, command-line Python source code cleaner.
 
