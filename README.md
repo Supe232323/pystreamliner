@@ -1,6 +1,6 @@
 # pystreamliner
 [![PyPI version](https://img.shields.io/pypi/v/pystreamliner.svg)](https://pypi.org/project/pystreamliner/)
-[![Python versions](https://img.shields.io/pypi/pyversions/pystreamliner.svg)](https://pypi.org/project/pystreamliner/)
+[![Python](https://img.shields.io/badge/python-3.13%2B-blue)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/pypi/l/pystreamliner.svg)](https://github.com/Supe232323/pystreamliner/blob/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/Supe232323/pystreamliner/ci.yml?branch=main&label=CI)](https://github.com/Supe232323/pystreamliner/actions)
 [![Last commit](https://img.shields.io/github/last-commit/Supe232323/pystreamliner)](https://github.com/Supe232323/pystreamliner/commits/main)
