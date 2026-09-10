@@ -1,9 +1,9 @@
 # pystreamliner
-[![PyPI](https://badgen.net/pypi/v/pystreamliner)](https://pypi.org/project/pystreamliner/)
-[![Python](https://badgen.net/badge/python/3.13+/blue)](https://www.python.org/downloads/)
-[![License](https://badgen.net/badge/license/AGPL-3.0/blue)](https://www.gnu.org/licenses/agpl-3.0)
-
-
+[![PyPI version](https://img.shields.io/pypi/v/pystreamliner.svg)](https://pypi.org/project/pystreamliner/)
+[![Python versions](https://img.shields.io/pypi/pyversions/pystreamliner.svg)](https://pypi.org/project/pystreamliner/)
+[![License](https://img.shields.io/pypi/l/pystreamliner.svg)](https://github.com/Supe232323/pystreamliner/blob/main/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/Supe232323/pystreamliner/ci.yml?branch=main&label=CI)](https://github.com/Supe232323/pystreamliner/actions)
+[![Last commit](https://img.shields.io/github/last-commit/Supe232323/pystreamliner)](https://github.com/Supe232323/pystreamliner/commits/main)
 
 
 **Automatically clean up messy Python files — without breaking anything.**
