@@ -60,16 +60,170 @@ VAGUE_NAMES: frozenset[str] = frozenset({
 
 # SARIF level mapping for warning categories
 SARIF_LEVEL: dict[str, str] = {
-    "dangerous_call": "error",
-    "hardcoded_secret": "error",
-    "broad_except": "warning",
-    "assert_used": "note",
-    "unused_variable": "note",
-    "unused_function": "note",
-    "unused_class": "note",
-    "vague_name": "note",
-    "shadowed_builtin": "warning",
-}
+def _sarif_rule_id(category: str) -> str:
+    return f"PYS/{category}"
+
+
+def _sarif_clean_message(text: str) -> str:
+    """Strip leading warning emoji so Code Scanning / SARIF viewers stay plain."""
+    t = text.strip()
+    if t.startswith("⚠"):
+        t = t.lstrip("⚠").strip()
+    return t
+
+
+def _sarif_uri(path: Path, cwd: Path) -> str:
+    """Prefer repo-relative POSIX paths; fall back to absolute."""
+    try:
+        return path.resolve().relative_to(cwd.resolve()).as_posix()
+    except ValueError:
+        return path.resolve().as_posix()
+
+
+def _sarif_ensure_rule(rules_seen: dict[str, dict[str, Any]], category: str) -> str:
+    rid = _sarif_rule_id(category)
+    if rid in rules_seen:
+        return rid
+    short = category.replace("_", " ")
+    level = SARIF_LEVEL.get(category, "warning")
+    help_text = SARIF_RULE_HELP.get(category, short)
+    rules_seen[rid] = {
+        "id": rid,
+        "name": short.title().replace(" ", ""),
+        "shortDescription": {"text": short},
+        "fullDescription": {"text": help_text},
+        "helpUri": "https://github.com/Supe232323/pystreamliner#what-it-does",
+        "defaultConfiguration": {"level": level},
+        "properties": {
+            "tags": ["python", "pystreamliner", category.split("_")[0]],
+            "precision": "high" if category in {"dangerous_call", "unused_import_fixed"} else "medium",
+        },
+    }
+    return rid
+
+
+def build_sarif(
+    results: list[FileResult],
+    tool_name: str = "pystreamliner",
+    tool_version: str = TOOL_VERSION,
+) -> dict[str, Any]:
+    """Build a SARIF 2.1.0 document suitable for GitHub Code Scanning upload.
+
+    Improvements over the minimal emitter:
+    - relative artifact URIs when possible (stable across machines)
+    - fullDescription + helpUri + tags on rules
+    - Tier-1 fix notes for imports, duplicate lines, blank lines
+    - plain messages (no leading emoji)
+    - partialFingerprints for stable alert identity across runs
+    """
+    rules_seen: dict[str, dict[str, Any]] = {}
+    sarif_results: list[dict[str, Any]] = []
+    cwd = Path.cwd()
+
+    for r in results:
+        uri = _sarif_uri(r.path, cwd)
+        if r.error:
+            sarif_results.append({
+                "level": "error",
+                "message": {"text": r.error},
+                "locations": [{
+                    "physicalLocation": {
+                        "artifactLocation": {"uri": uri},
+                    }
+                }],
+            })
+            continue
+
+        if r.had_changes:
+            if r.stats.unused_imports_removed:
+                rid = _sarif_ensure_rule(rules_seen, "unused_import_fixed")
+                msg = f"Removed {r.stats.unused_imports_removed} unused import(s)"
+                sarif_results.append({
+                    "ruleId": rid,
+                    "level": "note",
+                    "message": {"text": msg},
+                    "locations": [{
+                        "physicalLocation": {
+                            "artifactLocation": {"uri": uri},
+                        }
+                    }],
+                    "partialFingerprints": {
+                        "primaryLocationLineHash": f"{uri}|unused_import_fixed|{r.stats.unused_imports_removed}",
+                    },
+                    "properties": {"category": "unused_import_fixed"},
+                })
+            if r.stats.duplicate_lines_removed:
+                rid = _sarif_ensure_rule(rules_seen, "duplicate_lines_fixed")
+                msg = f"Removed {r.stats.duplicate_lines_removed} consecutive duplicate line(s)"
+                sarif_results.append({
+                    "ruleId": rid,
+                    "level": "note",
+                    "message": {"text": msg},
+                    "locations": [{
+                        "physicalLocation": {
+                            "artifactLocation": {"uri": uri},
+                        }
+                    }],
+                    "partialFingerprints": {
+                        "primaryLocationLineHash": f"{uri}|duplicate_lines_fixed|{r.stats.duplicate_lines_removed}",
+                    },
+                    "properties": {"category": "duplicate_lines_fixed"},
+                })
+            if r.stats.blank_lines_reduced:
+                rid = _sarif_ensure_rule(rules_seen, "blank_lines_fixed")
+                msg = f"Reduced {r.stats.blank_lines_reduced} excess blank line(s)"
+                sarif_results.append({
+                    "ruleId": rid,
+                    "level": "note",
+                    "message": {"text": msg},
+                    "locations": [{
+                        "physicalLocation": {
+                            "artifactLocation": {"uri": uri},
+                        }
+                    }],
+                    "partialFingerprints": {
+                        "primaryLocationLineHash": f"{uri}|blank_lines_fixed|{r.stats.blank_lines_reduced}",
+                    },
+                    "properties": {"category": "blank_lines_fixed"},
+                })
+
+        for w in r.warnings:
+            rid = _sarif_ensure_rule(rules_seen, w.category)
+            level = SARIF_LEVEL.get(w.category, "warning")
+            msg = _sarif_clean_message(w.message)
+            sarif_results.append({
+                "ruleId": rid,
+                "level": level,
+                "message": {"text": msg},
+                "locations": [{
+                    "physicalLocation": {
+                        "artifactLocation": {"uri": uri},
+                        "region": {"startLine": max(1, int(w.lineno or 1))},
+                    }
+                }],
+                "partialFingerprints": {
+                    "primaryLocationLineHash": f"{uri}|{w.category}|{w.name}|{w.lineno}",
+                },
+                "properties": {"category": w.category, "symbol": w.name},
+            })
+
+    return {
+        "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+        "version": "2.1.0",
+        "runs": [{
+            "tool": {
+                "driver": {
+                    "name": tool_name,
+                    "version": tool_version,
+                    "semanticVersion": tool_version,
+                    "informationUri": "https://github.com/Supe232323/pystreamliner",
+                    "rules": list(rules_seen.values()),
+                }
+            },
+            "results": sarif_results,
+            "columnKind": "utf16CodeUnits",
+        }],
+    }
 
 # ─── Data Structures ─────────────────────────────────────────────────────────
 @dataclasses.dataclass
