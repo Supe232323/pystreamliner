@@ -6,8 +6,8 @@ only the latest release is supported. older versions do not receive security upd
 
 | version   | supported          |
 | --------- | ------------------ |
-| v1.20.0   | :white_check_mark: |
-| < v1.20.0 | :x:                |
+| v1.21.2   | :white_check_mark: |
+| < v1.21.2 | :x:                |
 
 ## reporting a vulnerability
 
