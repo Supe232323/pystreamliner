@@ -58,8 +58,41 @@ VAGUE_NAMES: frozenset[str] = frozenset({
     "a", "b", "c", "d", "e", "f",
 })
 
+
 # SARIF level mapping for warning categories
 SARIF_LEVEL: dict[str, str] = {
+    "dangerous_call": "error",
+    "hardcoded_secret": "error",
+    "broad_except": "warning",
+    "assert_used": "note",
+    "unused_variable": "note",
+    "unused_function": "note",
+    "unused_class": "note",
+    "vague_name": "note",
+    "shadowed_builtin": "warning",
+    "unused_import_fixed": "note",
+    "duplicate_lines_fixed": "note",
+    "blank_lines_fixed": "note",
+}
+
+TOOL_VERSION = "1.21.1"
+
+SARIF_RULE_HELP: dict[str, str] = {
+    "dangerous_call": "Call that can execute untrusted code or spawn a shell (eval, exec, pickle, os.system, shell=True, unsafe yaml.load).",
+    "hardcoded_secret": "String literal assigned to a name that looks like a secret (password, token, api_key, etc.).",
+    "broad_except": "Bare except: or except Exception: — catches more than intended.",
+    "assert_used": "assert is stripped under -O; do not use it for security checks.",
+    "unused_variable": "Assigned name that is never read in this file.",
+    "unused_function": "Top-level function never referenced in this file (or project index if --project).",
+    "unused_class": "Top-level class never referenced in this file (or project index if --project).",
+    "vague_name": "Very short or placeholder name (x, tmp, foo, …).",
+    "shadowed_builtin": "Name shadows a common builtin (id, len, type, …).",
+    "unused_import_fixed": "Tier-1: unused import removed or trimmed.",
+    "duplicate_lines_fixed": "Tier-1: consecutive duplicate line removed.",
+    "blank_lines_fixed": "Tier-1: excess blank lines collapsed.",
+}
+
+
 def _sarif_rule_id(category: str) -> str:
     return f"PYS/{category}"
 
@@ -100,8 +133,6 @@ def _sarif_ensure_rule(rules_seen: dict[str, dict[str, Any]], category: str) -> 
         },
     }
     return rid
-
-
 def build_sarif(
     results: list[FileResult],
     tool_name: str = "pystreamliner",
