@@ -9,6 +9,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+  
+    permissions:
+      contents: read
+      security-events: write
+
     strategy:
       matrix:
         python-version: ["3.13", "3.14"]
@@ -45,3 +50,4 @@ jobs:
         with:
           sarif_file: results.sarif
         continue-on-error: true
+
