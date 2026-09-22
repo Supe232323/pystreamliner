@@ -75,7 +75,7 @@ SARIF_LEVEL: dict[str, str] = {
     "blank_lines_fixed": "note",
 }
 
-TOOL_VERSION = "1.21.1"
+TOOL_VERSION = "1.21.2"
 
 SARIF_RULE_HELP: dict[str, str] = {
     "dangerous_call": "Call that can execute untrusted code or spawn a shell (eval, exec, pickle, os.system, shell=True, unsafe yaml.load).",
